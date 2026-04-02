@@ -29,7 +29,7 @@ jobs:
       - name: Build EXE
         shell: powershell
         run: |
-          pyinstaller --onefile --icon=v2ray_auto_scanner.ico --name v2ray_auto_scanner src/main.py
+          pyinstaller --onefile --name v2ray_auto_scanner src/main.py
           
       - name: Upload EXE
         uses: actions/upload-artifact@v4
