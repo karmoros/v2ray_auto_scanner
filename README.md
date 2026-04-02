@@ -20,20 +20,50 @@
 
 ---
 
-## 🚀 Быстрый старт (1 минута)
+## 🚀 Quick Start
+
+| OS | Command |
+|----|---------|
+| **Windows** | Скачай `.exe` из Releases → запусти |
+| **macOS** | `pip install -r requirements.txt && python src/main.py` |
+| **Linux** | `pip install -r requirements.txt && python src/main.py` |
+| **Docker** | `docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner` |
 
 ```bash
-# 1. Скачай exe из Releases
-# 2. Распакуй рядом с settings.json
-# 3. Запусти → output/fast_nodes.txt готов!
-```
-
-Или из исходников:
-
-```bash
+# Из исходников (любой OS):
 pip install -r requirements.txt
 python src/main.py
 ```
+
+---
+
+## 🐳 Docker
+
+### Build
+```bash
+docker build -t karmoros/v2ray_auto_scanner .
+```
+
+### Run
+```bash
+docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner
+```
+
+### Результат сохранится в папку `output/` на хосте.
+
+---
+
+## 📦 Python Dependencies
+
+### Установка
+```bash
+pip install -r requirements.txt
+```
+
+### Требования к системе
+- **Python 3.11+**
+- **Linux/macOS:** Обычно дополнительные пакеты не нужны
+- **Windows:** Python с python.org или из Microsoft Store
 
 ---
 
@@ -81,7 +111,7 @@ python src/main.py --subs "https://example.com/sub.txt" --limit 50
 ## Сборка .exe
 
 ```bash
-pyinstaller --onefile --icon=v2ray_auto_scanner.ico src/main.py
+pyinstaller --onefile --name v2ray_auto_scanner src/main.py
 ```
 
 или запустите `build.bat` на Windows.
