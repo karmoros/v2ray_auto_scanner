@@ -1,8 +1,60 @@
 # V2Ray Auto Scanner
 
+[![Release](https://img.shields.io/github/v/release/karmoros/v2ray_auto_scanner?include_prereleases&style=flat&label=Release)](https://github.com/karmoros/v2ray_auto_scanner/releases/latest)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Автоматический сканер VLESS/V2Ray конфигов с измерением задержки.
 
 ![v2ray_auto_scanner](v2ray_auto_scanner.ico)
+
+---
+
+## 📥 Ready-to-use Downloads
+
+**Latest Release:** [v1.0.0](https://github.com/karmoros/v2ray_auto_scanner/releases/latest)
+
+| File | Description |
+|------|-------------|
+| `v2ray_auto_scanner.exe` | Готовый к запуску exe |
+| `settings.json` | Конфиг (отредактируй подписки) |
+
+---
+
+## 🚀 Quick Start (1 минута)
+
+```bash
+# 1. Скачай exe из Releases
+# 2. Распакуй рядом с settings.json
+# 3. Запусти → output/fast_nodes.txt готов!
+```
+
+Или из исходников:
+
+```bash
+pip install -r requirements.txt
+python src/main.py
+```
+
+---
+
+## ⚙️ Customize
+
+Отредактируй `settings.json`:
+
+```json
+{
+  "subscriptions": [
+    "https://your-sub.com/sub.txt"
+  ],
+  "timeout_seconds": 5,
+  "max_concurrent_scans": 50
+}
+```
+
+> ⚠️ **RKN банит публичные подписки!** меняйте ссылки на актуальные.
+
+---
 
 ## Возможности
 
@@ -12,60 +64,11 @@
 - Сортирует по скорости и сохраняет лучшие узлы
 - Поддержка кастомных подписок через CLI
 
-## Требования
-
-- Python 3.10+ (рекомендуется 3.11 или 3.12)
-- Доступ к GitHub для загрузки подписок
-
-## Быстрый старт
-
-### Установка зависимостей
-
-```bash
-pip install -r requirements.txt
-```
-
-### Запуск
-
-```bash
-python src/main.py
-```
-
-или с кастомными подписками:
-
-```bash
-python src/main.py --subs "url1,url2"
-```
-
-## Конфигурация
-
-Все настройки в `config/settings.json`:
-
-```json
-{
-  "subscriptions": [
-    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS_mobile.txt",
-    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt"
-  ],
-  "timeout_seconds": 5,
-  "max_concurrent_scans": 50,
-  "max_nodes_per_source": 400,
-  "output_best_limit": 80,
-  "max_latency_ms": 1200,
-  "allowed_protocols": ["vless"]
-}
-```
-
-## ⚠️ Важно
-
-> **RKN блокирует публичные подписки!** В настройках указаны примеры подписок, которые могут не работать. Замените их на актуальные ссылки в `settings.json`.
-
 ## CLI Аргументы
 
-- `--subs` — кастомные подписки через запятую (переопределяет settings.json)
+- `--subs` — кастомные подписки через запятую
 - `--limit` — количество узлов для сохранения
 
-Пример:
 ```bash
 python src/main.py --subs "https://example.com/sub.txt" --limit 50
 ```
@@ -73,7 +76,7 @@ python src/main.py --subs "https://example.com/sub.txt" --limit 50
 ## Результат
 
 После сканирования:
-- `output/fast_nodes.txt` — текстовый список для импорта в V2Ray клиент
+- `output/fast_nodes.txt` — текстовый список для импорта в V2Ray
 - `output/fast_nodes.json` — JSON для машинной обработки
 
 ## Сборка .exe
