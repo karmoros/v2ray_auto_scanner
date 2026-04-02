@@ -6,7 +6,6 @@
 
 Автоматический сканер VLESS/V2Ray конфигов с измерением задержки.
 
-![v2ray_auto_scanner](v2ray_auto_scanner.ico)
 
 ---
 
