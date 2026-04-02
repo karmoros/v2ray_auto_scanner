@@ -21,7 +21,7 @@
 
 ---
 
-## 🚀 Quick Start (1 минута)
+## 🚀 Быстрый старт (1 минута)
 
 ```bash
 # 1. Скачай exe из Releases
@@ -38,7 +38,7 @@ python src/main.py
 
 ---
 
-## ⚙️ Customize
+## ⚙️ Настройки
 
 Отредактируй `settings.json`:
 
