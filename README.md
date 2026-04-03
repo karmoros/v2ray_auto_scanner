@@ -19,11 +19,11 @@
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Быстрый старт
 
 | OS | Command |
 |----|---------|
-| **Windows** | 1. Скачай `.exe` из Releases<br>2. Создай рядом файл `settings.json` с подписками<br>3. Запусти |
+| **Windows** | 1. Скачай `.exe` из Releases<br>2.  Запусти |
 | **macOS** | `pip install -r requirements.txt && python src/main.py` |
 | **Linux** | `pip install -r requirements.txt && python src/main.py` |
 | **Docker** | `docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner` |
