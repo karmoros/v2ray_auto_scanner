@@ -30,13 +30,17 @@ jobs:
       - name: Build EXE
         shell: powershell
         run: |
-          pyinstaller --onefile --name v2ray_auto_scanner src/main.py
+          pyinstaller --onefile --name v2ray_auto_scanner.exe --icon=v2ray_auto_scanner.ico src/main.py
+          
+      - name: List dist contents
+        shell: powershell
+        run: Get-ChildItem dist/
           
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
           name: v2ray_auto_scanner
-          path: dist/v2ray_auto_scanner.exe
+          path: dist/*.exe
           
       - name: Upload settings.json
         uses: actions/upload-artifact@v4
@@ -49,7 +53,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            dist/v2ray_auto_scanner.exe
+            dist/*.exe
             config/settings.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
