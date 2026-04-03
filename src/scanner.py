@@ -57,8 +57,7 @@ def ensure_config():
         with open(settings_path, "w", encoding="utf-8") as f:
             json.dump(default_settings, f, ensure_ascii=False, indent=4)
         print(f"[*] Создан файл настроек: {settings_path}")
-        print("[*] Запусти программу повторно\n")
-        sys.exit(0)
+        print("[*] Запускаю сканирование...\n")
 
 
 def load_settings() -> Dict:
