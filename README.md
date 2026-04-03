@@ -15,7 +15,7 @@
 
 | File | Description |
 |------|-------------|
-| `v2ray_auto_scanner.exe` | Готовый к запуску exe (settings.json создастся автоматически) |
+| `v2ray_auto_scanner.exe` | Готовый к запуску exe (- `output/fast_nodes.txt` — текстовый список для импорта в V2Ray создастся автоматически) |
 
 ---
 
