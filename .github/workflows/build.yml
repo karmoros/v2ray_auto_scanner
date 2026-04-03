@@ -30,7 +30,7 @@ jobs:
       - name: Build EXE
         shell: powershell
         run: |
-          pyinstaller --onefile --name v2ray_auto_scanner.exe --icon=v2ray_auto_scanner.ico src/main.py
+          pyinstaller --onefile --name v2ray_auto_scanner.exe src/main.py
           
       - name: List dist contents
         shell: powershell
