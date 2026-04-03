@@ -34,17 +34,29 @@ def ensure_config():
     settings_path = CONFIG_DIR / "settings.json"
     if not settings_path.exists():
         default_settings = {
-            "subscriptions": [],
-            "timeout_seconds": 3,
-            "max_concurrent_scans": 100,
-            "max_nodes_per_source": 500,
-            "output_best_limit": 100,
-            "tcp_ping_port_fallback": 443
+            "subscriptions": [
+                "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS_mobile.txt",
+                "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt"
+            ],
+            "timeout_seconds": 5,
+            "max_concurrent_scans": 50,
+            "max_nodes_per_source": 400,
+            "output_best_limit": 80,
+            "tcp_ping_port_fallback": 443,
+            "ping_attempts": 2,
+            "max_latency_ms": 1200,
+            "allowed_protocols": ["vless"],
+            "reality_filter": {
+                "sni_whitelist": ["www.apple.com", "www.microsoft.com", "www.google.com", "www.cloudflare.com"],
+                "fp_whitelist": ["chrome", "firefox", "random"],
+                "require_sid": True,
+                "ports": [443, 8443, 80],
+                "exclude_ips": []
+            }
         }
         with open(settings_path, "w", encoding="utf-8") as f:
             json.dump(default_settings, f, ensure_ascii=False, indent=4)
         print(f"[*] Создан файл настроек: {settings_path}")
-        print("[*] Отредактируй его, добавив ссылки на подписки")
         print("[*] Запусти программу повторно\n")
         sys.exit(0)
 
