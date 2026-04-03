@@ -11,12 +11,11 @@
 
 ## 📥 Ready-to-use Downloads
 
-**Latest Release:** [v1.0.0](https://github.com/karmoros/v2ray_auto_scanner/releases/latest)
+**Latest Release:** [v1.0.3](https://github.com/karmoros/v2ray_auto_scanner/releases/latest)
 
 | File | Description |
 |------|-------------|
-| `v2ray_auto_scanner.exe` | Готовый к запуску exe |
-| `settings.json` | Конфиг (отредактируй подписки) |
+| `v2ray_auto_scanner.exe` | Готовый к запуску exe (settings.json создастся автоматически) |
 
 ---
 
@@ -24,7 +23,7 @@
 
 | OS | Command |
 |----|---------|
-| **Windows** | Скачай `.exe` из Releases → запусти |
+| **Windows** | 1. Скачай `.exe` из Releases<br>2. Создай рядом файл `settings.json` с подписками<br>3. Запусти |
 | **macOS** | `pip install -r requirements.txt && python src/main.py` |
 | **Linux** | `pip install -r requirements.txt && python src/main.py` |
 | **Docker** | `docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner` |

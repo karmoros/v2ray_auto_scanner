@@ -29,6 +29,26 @@ CONFIG_DIR = BASE_DIR / "config"
 OUTPUT_DIR = BASE_DIR / "output"
 
 
+def ensure_config():
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    settings_path = CONFIG_DIR / "settings.json"
+    if not settings_path.exists():
+        default_settings = {
+            "subscriptions": [],
+            "timeout_seconds": 3,
+            "max_concurrent_scans": 100,
+            "max_nodes_per_source": 500,
+            "output_best_limit": 100,
+            "tcp_ping_port_fallback": 443
+        }
+        with open(settings_path, "w", encoding="utf-8") as f:
+            json.dump(default_settings, f, ensure_ascii=False, indent=4)
+        print(f"[*] Создан файл настроек: {settings_path}")
+        print("[*] Отредактируй его, добавив ссылки на подписки")
+        print("[*] Запусти программу повторно\n")
+        sys.exit(0)
+
+
 def load_settings() -> Dict:
     settings_path = CONFIG_DIR / "settings.json"
     try:
@@ -45,6 +65,7 @@ def load_settings() -> Dict:
 
 async def scan_all(custom_subscriptions: List[str] = []) -> None:
     print("[*] V2Ray Auto Scanner запущен!")
+    ensure_config()
 
     settings = load_settings()
     subscriptions = custom_subscriptions or settings.get("subscriptions", [])
