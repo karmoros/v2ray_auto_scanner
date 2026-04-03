@@ -24,5 +24,4 @@ output/
 .env
 bot.log
 v2ray_auto_scanner.exe
-*.ico
 .DS_Store
