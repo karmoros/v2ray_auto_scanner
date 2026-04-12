@@ -35,8 +35,8 @@ def ensure_config():
     if not settings_path.exists():
         default_settings = {
             "subscriptions": [
-                "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS_mobile.txt",
-                "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt"
+                "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS.txt",
+                "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS_mobile.txt"
             ],
             "timeout_seconds": 5,
             "max_concurrent_scans": 50,
@@ -144,6 +144,16 @@ async def scan_all(custom_subscriptions: List[str] = []) -> None:
         parsed_nodes.append(parsed)
 
     print(f"[*] Удалось распарсить узлов: {len(parsed_nodes):,}")
+
+    seen_keys = set()
+    unique_nodes = []
+    for node in parsed_nodes:
+        key = f"{node['host']}:{node['port']}"
+        if key not in seen_keys:
+            seen_keys.add(key)
+            unique_nodes.append(node)
+    parsed_nodes = unique_nodes
+    print(f"[*] После дедупликации (host:port): {len(parsed_nodes):,}")
 
     if not parsed_nodes:
         print(" Не удалось распарсить ни одного узла!")
