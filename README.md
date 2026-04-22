@@ -133,15 +133,14 @@ You can define a blacklist of VLESS nodes that should be skipped during scanning
 ```json
 {
   "subscriptions": [
-    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS.txt",
-    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS_mobile.txt"
+    "https://example.com/black_vless.txt"
   ]
 }
 ```
 
 The scanner will skip any nodes present in these blacklists. This is useful when some nodes are unstable, blocked by RKN, or produce false-positive latency results.
 
-> ⚠️ **RKN банит публичные подписки!** меняйте ссылки на актуальные.
+> ⚠️ Public proxy subscriptions may get blocked or throttled over time. Use only up-to-date and legally obtained subscription URLs.
 
 ---
 
