@@ -58,6 +58,35 @@ v2ray_auto_scanner is an automated scanner for VLESS / VMESS / Shadowsocks proxy
 |----|---------|
 | **Windows** | 1. Скачай `.exe` из Releases<br>2. Запусти |
 | **macOS** / **Linux** | See below |
+
+### Windows .exe quick usage
+
+If you download and run `v2ray_auto_scanner.exe` on Windows:
+
+- it will automatically:
+  - create the `output` directory (if it does not exist);
+  - start scanning your configured subscriptions;
+  - save the result to a `.txt` file in `output` with the fastest ~80 nodes.
+
+You don't need to use the command line for basic usage — just run the `.exe` and wait for the scan to finish.
+
+### Example workflow: Windows + iOS (V2Client)
+
+This is a simple way to use the scanner together with an iOS V2Client:
+
+1. On a Windows PC:
+   - download `v2ray_auto_scanner.exe` from the latest GitHub release;
+   - place it next to your `settings.json` (or default config);
+   - run the `.exe` by double-clicking it;
+   - wait until the scan finishes and the output file is created in the `output` directory (with the fastest ~80 nodes).
+2. Open the `output` directory and locate `fast_nodes.txt`.
+3. Send this file to yourself via Telegram (or another messenger).
+4. On your iPhone:
+   - open the chat in your messenger;
+   - open the `.txt` file, select all the contents (all `vless://` / `vmess://` / `ss://` links);
+   - copy them and paste into your V2Client using its "import from clipboard" or "add multiple nodes" feature.
+
+This workflow allows you to refresh your configs from any PC with Windows and then use them on your mobile device.
 | **Docker** | `docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner` |
 
 ```bash
