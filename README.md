@@ -6,24 +6,57 @@
 
 Автоматический сканер VLESS/V2Ray конфигов с измерением задержки.
 
-
 ---
 
 ## 📥 Ready-to-use Downloads
 
-**Latest Release:** [v1.0.3](https://github.com/karmoros/v2ray_auto_scanner/releases/latest)
+**Latest Release:** [v1.0.6](https://github.com/karmoros/v2ray_auto_scanner/releases/latest)
 
 | File | Description |
 |------|-------------|
-| `v2ray_auto_scanner.exe` | Готовый к запуску exe (- `output/fast_nodes.txt` — текстовый список для импорта в V2Ray создастся автоматически) |
+| `v2ray_auto_scanner.exe` | Готовый к запуску exe (папка `output/fast_nodes.txt` — текстовый список для импорта в V2Ray создастся автоматически) |
 
 ---
 
-## 🚀 Быстрый старт
+## 🚀 English Summary
+
+v2ray_auto_scanner is an automated scanner for VLESS / VMESS / Shadowsocks proxy subscriptions. It downloads subscription links, parses proxy nodes, checks their availability and latency, and produces a sorted list of the fastest nodes.
+
+### Main Features
+
+- Supports VLESS, VMESS and Shadowsocks subscription links
+- Measures latency (TCP/TLS handshake) and filters dead nodes
+- Outputs results to plain text and JSON files
+- CLI arguments for custom subscription URLs and node limits
+- Docker image and standalone Windows .exe build
+- This tool is designed for users who need to quickly find the fastest and most stable proxy nodes from public or private subscription sources.
+
+---
+
+## Supported Protocols
+
+- **VLESS**
+- **VMESS**
+- **Shadowsocks**
+
+---
+
+## How It Works
+
+1. Downloads one or more subscription URLs (HTTP/HTTPS).
+2. Decodes and parses VLESS / VMESS / Shadowsocks links.
+3. Normalizes all nodes to a common internal format.
+4. Performs concurrent connectivity and latency checks.
+5. Sorts nodes by latency and filters out dead or unstable ones.
+6. Saves the final list to `output/fast_nodes.txt` and `output/fast_nodes.json`.
+
+---
+
+## 🚀 Quick Start
 
 | OS | Command |
 |----|---------|
-| **Windows** | 1. Скачай `.exe` из Releases<br>2.  Запусти |
+| **Windows** | 1. Скачай `.exe` из Releases<br>2. Запусти |
 | **macOS** | `pip install -r requirements.txt && python src/main.py` |
 | **Linux** | `pip install -r requirements.txt && python src/main.py` |
 | **Docker** | `docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner` |
@@ -66,33 +99,53 @@ pip install -r requirements.txt
 
 ---
 
-## ⚙️ Настройки
+## ⚙️ Configuration
 
-Отредактируй `settings.json`:
+Edit `config/settings.json`:
 
 ```json
 {
   "subscriptions": [
-    "https://your-sub.com/sub.txt"
+    "https://example.com/sub.txt"
   ],
   "timeout_seconds": 5,
-  "max_concurrent_scans": 50
+  "max_concurrent_scans": 50,
+  "max_nodes_per_source": 400,
+  "output_best_limit": 80,
+  "tcp_ping_port_fallback": 443,
+  "ping_attempts": 2,
+  "max_latency_ms": 1200,
+  "allowed_protocols": ["vless"],
+  "reality_filter": {
+    "sni_whitelist": ["www.apple.com", "www.microsoft.com", "www.google.com", "www.cloudflare.com"],
+    "fp_whitelist": ["chrome", "firefox", "random"],
+    "require_sid": true,
+    "ports": [443, 8443, 80],
+    "exclude_ips": []
+  }
 }
 ```
+
+### BLACK_VLESS Lists
+
+You can define a blacklist of VLESS nodes that should be skipped during scanning. Add subscription URLs containing BLACK_VLESS lists:
+
+```json
+{
+  "subscriptions": [
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS.txt",
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS_mobile.txt"
+  ]
+}
+```
+
+The scanner will skip any nodes present in these blacklists. This is useful when some nodes are unstable, blocked by RKN, or produce false-positive latency results.
 
 > ⚠️ **RKN банит публичные подписки!** меняйте ссылки на актуальные.
 
 ---
 
-## Возможности
-
-- Скачивает конфиги из публичных подписок
-- Автоматически парсит VLESS, VMESS, ShadowSocks ссылки
-- Измеряет задержку узлов через TCP/TLS handshake
-- Сортирует по скорости и сохраняет лучшие узлы
-- Поддержка кастомных подписок через CLI
-
-## CLI Аргументы
+## CLI Arguments
 
 - `--subs` — кастомные подписки через запятую
 - `--limit` — количество узлов для сохранения
@@ -101,11 +154,15 @@ pip install -r requirements.txt
 python src/main.py --subs "https://example.com/sub.txt" --limit 50
 ```
 
+---
+
 ## Результат
 
-После сканирования:
+After scanning:
 - `output/fast_nodes.txt` — текстовый список для импорта в V2Ray
 - `output/fast_nodes.json` — JSON для машинной обработки
+
+---
 
 ## Сборка .exe
 
@@ -113,12 +170,16 @@ python src/main.py --subs "https://example.com/sub.txt" --limit 50
 pyinstaller --onefile --name v2ray_auto_scanner src/main.py
 ```
 
-или запустите `build.bat` на Windows.
+or run `build.bat` on Windows.
+
+---
 
 ## Опционально: Telegram Bot
 
-См. `src/bot/README-bot.md` для настройки.
+See `src/bot/README-bot.md` for setup instructions.
+
+---
 
 ## Лицензия
 
-MIT License — см. файл LICENSE.
+MIT License — see LICENSE file.
