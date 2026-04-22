@@ -4,7 +4,147 @@
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+**Языки / Languages**
+
+- [Русский](#русский)
+- [English](#english-summary)
+
+---
+
+## Русский
+
 Автоматический сканер VLESS/V2Ray конфигов с измерением задержки.
+
+---
+
+### Быстрый старт для Windows (без командной строки)
+
+1. Скачай `v2ray_auto_scanner.exe` с вкладки **Releases**.
+2. Положи `.exe` рядом с файлом `settings.json` (или запусти, чтобы он создал базовый конфиг).
+3. Дважды кликни по `v2ray_auto_scanner.exe`.
+4. Подожди, пока программа:
+   - создаст папку `output` (если её нет);
+   - скачает и проверит все конфиги;
+   - сохранит файл `output/fast_nodes.txt` с ~80 лучшими узлами.
+5. Открой `output/fast_nodes.txt` — это список рабочих `vless://` / `vmess://` / `ss://` ссылок, готовых к импорту в V2Ray‑клиент.
+
+### Пример: Windows + iOS (V2Client)
+
+1. На Windows‑ПК:
+   - запускаешь `v2ray_auto_scanner.exe`;
+   - ждёшь, пока появится файл `output/fast_nodes.txt` (в нём ~80 лучших нод).
+2. Открываешь папку `output` и отправляешь файл `fast_nodes.txt` сам себе в Telegram (или другой мессенджер).
+3. На iPhone:
+   - открываешь чат с этим файлом;
+   - открываешь `fast_nodes.txt`, выделяешь и копируешь весь текст;
+   - вставляешь скопированные `vless://` / `vmess://` / `ss://` ссылки в V2Client или другой V2Ray‑клиент (обычно есть пункт «импорт из буфера обмена» или «добавить несколько узлов»).
+
+Так можно обновлять рабочие конфиги с любого Windows‑ПК, даже если под рукой только iPhone.
+
+### Docker
+
+**Сборка:**
+```bash
+docker build -t karmoros/v2ray_auto_scanner .
+```
+
+**Запуск:**
+```bash
+docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner
+```
+
+Результат сохранится в папку `output/` на хосте.
+
+### Python Dependencies
+
+**Установка:**
+```bash
+pip install -r requirements.txt
+```
+
+**Требования к системе:**
+- **Python 3.11+**
+- **Linux/macOS:** Обычно дополнительные пакеты не нужны
+- **Windows:** Python с python.org или из Microsoft Store
+
+### Конфигурация
+
+Edit `config/settings.json`:
+
+```json
+{
+  "subscriptions": [
+    "https://example.com/sub.txt"
+  ],
+  "timeout_seconds": 5,
+  "max_concurrent_scans": 50,
+  "max_nodes_per_source": 400,
+  "output_best_limit": 80,
+  "tcp_ping_port_fallback": 443,
+  "ping_attempts": 2,
+  "max_latency_ms": 1200,
+  "allowed_protocols": ["vless"],
+  "reality_filter": {
+    "sni_whitelist": ["www.apple.com", "www.microsoft.com", "www.google.com", "www.cloudflare.com"],
+    "fp_whitelist": ["chrome", "firefox", "random"],
+    "require_sid": true,
+    "ports": [443, 8443, 80],
+    "exclude_ips": []
+  }
+}
+```
+
+Кратко о полях:
+
+- `subscriptions` — список ссылок на подписки с конфигами (VLESS / VMESS / Shadowsocks).
+- `timeout_seconds` — таймаут проверки одного узла.
+- `max_concurrent_scans` — сколько узлов сканировать параллельно.
+- `max_nodes_per_source` — максимум узлов, которые брать из одной подписки.
+- `output_best_limit` — сколько лучших узлов сохранять в итоговый файл (по умолчанию 80).
+- `allowed_protocols` — какие протоколы использовать (`vless`, `vmess`, `shadowsocks`).
+- `reality_filter` — фильтр для VLESS Reality (SNI, fp, порты и т.д.).
+
+Добавь больше подписок для чёрного списка:
+
+```json
+{
+  "subscriptions": [
+    "https://example.com/sub.txt",
+    "https://example.com/blacklist.txt"
+  ]
+}
+```
+
+### CLI Аргументы
+
+- `--subs` — кастомные подписки через запятую
+- `--limit` — количество узлов для сохранения
+
+```bash
+python src/main.py --subs "https://example.com/sub.txt" --limit 50
+```
+
+### Результат
+
+После сканирования:
+- `output/fast_nodes.txt` — текстовый список для импорта в V2Ray
+- `output/fast_nodes.json` — JSON для машинной обработки
+
+### Сборка .exe
+
+```bash
+pyinstaller --onefile --name v2ray_auto_scanner src/main.py
+```
+
+или запусти `build.bat` на Windows.
+
+### Опционально: Telegram Bot
+
+См. `src/bot/README-bot.md` для настройки.
+
+### Лицензия
+
+MIT License — см. файл LICENSE.
 
 ---
 
@@ -56,37 +196,8 @@ v2ray_auto_scanner is an automated scanner for VLESS / VMESS / Shadowsocks proxy
 
 | OS | Command |
 |----|---------|
-| **Windows** | 1. Скачай `.exe` из Releases<br>2. Запусти |
-| **macOS** / **Linux** | See below |
-
-### Windows .exe quick usage
-
-If you download and run `v2ray_auto_scanner.exe` on Windows:
-
-- it will automatically:
-  - create the `output` directory (if it does not exist);
-  - start scanning your configured subscriptions;
-  - save the result to a `.txt` file in `output` with the fastest ~80 nodes.
-
-You don't need to use the command line for basic usage — just run the `.exe` and wait for the scan to finish.
-
-### Example workflow: Windows + iOS (V2Client)
-
-This is a simple way to use the scanner together with an iOS V2Client:
-
-1. On a Windows PC:
-   - download `v2ray_auto_scanner.exe` from the latest GitHub release;
-   - place it next to your `settings.json` (or default config);
-   - run the `.exe` by double-clicking it;
-   - wait until the scan finishes and the output file is created in the `output` directory (with the fastest ~80 nodes).
-2. Open the `output` directory and locate `fast_nodes.txt`.
-3. Send this file to yourself via Telegram (or another messenger).
-4. On your iPhone:
-   - open the chat in your messenger;
-   - open the `.txt` file, select all the contents (all `vless://` / `vmess://` / `ss://` links);
-   - copy them and paste into your V2Client using its "import from clipboard" or "add multiple nodes" feature.
-
-This workflow allows you to refresh your configs from any PC with Windows and then use them on your mobile device.
+| **Windows** | Download `.exe` from Releases, then run it |
+| **macOS / Linux** | See below |
 | **Docker** | `docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner` |
 
 ```bash
@@ -98,31 +209,31 @@ python src/main.py
 
 ## 🐳 Docker
 
-### Build
+**Build:**
 ```bash
 docker build -t karmoros/v2ray_auto_scanner .
 ```
 
-### Run
+**Run:**
 ```bash
 docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner
 ```
 
-### Результат сохранится в папку `output/` на хосте.
+The result will be saved to the `output/` directory on the host.
 
 ---
 
 ## 📦 Python Dependencies
 
-### Установка
+**Installation:**
 ```bash
 pip install -r requirements.txt
 ```
 
-### Требования к системе
+**Requirements:**
 - **Python 3.11+**
-- **Linux/macOS:** Обычно дополнительные пакеты не нужны
-- **Windows:** Python с python.org или из Microsoft Store
+- **Linux/macOS:** No additional packages required
+- **Windows:** Python from python.org or Microsoft Store
 
 ---
 
@@ -161,8 +272,8 @@ Add more subscription URLs to exclude specific nodes (blacklist):
 
 ## CLI Arguments
 
-- `--subs` — кастомные подписки через запятую
-- `--limit` — количество узлов для сохранения
+- `--subs` — custom subscription URLs (comma-separated)
+- `--limit` — number of nodes to save
 
 ```bash
 python src/main.py --subs "https://example.com/sub.txt" --limit 50
@@ -170,15 +281,15 @@ python src/main.py --subs "https://example.com/sub.txt" --limit 50
 
 ---
 
-## Результат
+## Result
 
 After scanning:
-- `output/fast_nodes.txt` — текстовый список для импорта в V2Ray
-- `output/fast_nodes.json` — JSON для машинной обработки
+- `output/fast_nodes.txt` — plain text list for import to V2Ray client
+- `output/fast_nodes.json` — JSON for machine processing
 
 ---
 
-## Сборка .exe
+## Build .exe
 
 ```bash
 pyinstaller --onefile --name v2ray_auto_scanner src/main.py
@@ -188,12 +299,12 @@ or run `build.bat` on Windows.
 
 ---
 
-## Опционально: Telegram Bot
+## Optional: Telegram Bot
 
 See `src/bot/README-bot.md` for setup instructions.
 
 ---
 
-## Лицензия
+## License
 
 MIT License — see LICENSE file.
