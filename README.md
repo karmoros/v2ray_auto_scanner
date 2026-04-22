@@ -57,12 +57,10 @@ v2ray_auto_scanner is an automated scanner for VLESS / VMESS / Shadowsocks proxy
 | OS | Command |
 |----|---------|
 | **Windows** | 1. Скачай `.exe` из Releases<br>2. Запусти |
-| **macOS** | `pip install -r requirements.txt && python src/main.py` |
-| **Linux** | `pip install -r requirements.txt && python src/main.py` |
+| **macOS** / **Linux** | See below |
 | **Docker** | `docker run -v $(pwd)/output:/app/output karmoros/v2ray_auto_scanner` |
 
 ```bash
-# Из исходников (любой OS):
 pip install -r requirements.txt
 python src/main.py
 ```
@@ -126,19 +124,7 @@ Edit `config/settings.json`:
 }
 ```
 
-### BLACK_VLESS Lists
-
-You can define a blacklist of VLESS nodes that should be skipped during scanning. Add subscription URLs containing BLACK_VLESS lists:
-
-```json
-{
-  "subscriptions": [
-    "https://example.com/black_vless.txt"
-  ]
-}
-```
-
-The scanner will skip any nodes present in these blacklists. This is useful when some nodes are unstable, blocked by RKN, or produce false-positive latency results.
+Add more subscription URLs to exclude specific nodes (blacklist):
 
 > ⚠️ Public proxy subscriptions may get blocked or throttled over time. Use only up-to-date and legally obtained subscription URLs.
 
