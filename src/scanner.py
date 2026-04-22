@@ -35,8 +35,7 @@ def ensure_config():
     if not settings_path.exists():
         default_settings = {
             "subscriptions": [
-                "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS.txt",
-                "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS_mobile.txt"
+                "https://example.com/sub.txt"
             ],
             "timeout_seconds": 5,
             "max_concurrent_scans": 50,
